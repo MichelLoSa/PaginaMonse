@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Entrega Especial 💌</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(to bottom right, #ffe6f0, #ffc6e0);
+      background-attachment: fixed;
+      color: #4b1c3f;
+    }
+    header {
+      text-align: center;
+      padding: 60px 20px 20px;
+      z-index: 2;
+      position: relative;
+    }
+    header h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      color: #d63384;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 2;
+    }
+    input[type="date"] {
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      margin-top: 10px;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 12px 30px;
+      background-color: #d63384;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #c2185b;
+    }
+    .mensaje {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .heart-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .heart {
+      width: 100px;
+      height: 90px;
+      position: relative;
+      transform: rotate(-45deg);
+      animation: fillHeart 4s forwards;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      width: 100px;
+      height: 90px;
+      background: #ddd;
+      position: absolute;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -50px;
+      left: 0;
+    }
+    .heart::after {
+      left: 50px;
+      top: 0;
+    }
+    @keyframes fillHeart {
+      0% {
+        background: linear-gradient(to top, #fff 0%, #ff69b4 0%);
+      }
+      100% {
+        background: linear-gradient(to top, #fff 0%, #ff69b4 100%);
+      }
+    }
+    .texto-cargando {
+      font-size: 20px;
+      margin-top: 20px;
+      color: #d63384;
+      font-weight: bold;
+    }
+    .pedido {
+      display: none;
+      margin-top: 40px;
+    }
+    .pedido h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5em;
+      color: #e91e63;
+      display: none;
+    }
+    .contenido-regalo {
+      display: none;
+    }
+    audio {
+      margin-top: 20px;
+    }
+    .carta {
+      background: #fff0f5;
+      border-radius: 20px;
+      padding: 25px;
+      margin: 30px 0;
+      font-size: 1.8em;
+      font-family: 'Great Vibes', cursive;
+      line-height: 1.6em;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    .galeria {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    .galeria img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+    .galeria img:hover {
+      transform: scale(1.05);
+    }
+    .heart-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .heart-bg span {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: pink;
+      opacity: 0.6;
+      clip-path: polygon(
+        50% 0%, 61% 12%, 75% 12%, 87% 25%, 87% 37%,
+        75% 50%, 50% 75%, 25% 50%, 13% 37%, 13% 25%,
+        25% 12%, 39% 12%
+      );
+      animation: flotar 10s linear infinite;
+    }
+    @keyframes flotar {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      100% { transform: translateY(-100vh) scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="heart-bg">
+    <span style="left:10%; animation-delay: 0s;"></span>
+    <span style="left:30%; animation-delay: 2s;"></span>
+    <span style="left:50%; animation-delay: 4s;"></span>
+    <span style="left:70%; animation-delay: 6s;"></span>
+    <span style="left:90%; animation-delay: 8s;"></span>
+  </div>
+
+  <header>
+    <h1>Entrega de pedidos para personitas especiales 💌</h1>
+  </header>
+
+  <div class="container">
+    <p><strong>Introduzca la fecha de su pedido:</strong></p>
+    <input type="date" id="fechaPedido">
+    <br>
+    <button onclick="verificarFecha()">Buscar pedido</button>
+    <div class="mensaje" id="mensaje"></div>
+
+    <div class="heart-wrap" id="animacionCargando">
+      <div class="heart"></div>
+      <p class="texto-cargando">Cargando pedido...</p>
+    </div>
+
+    <div class="pedido" id="contenidoPedido">
+      <h2 id="tituloFelicidades">Felices dos meses, Himeko ❤️</h2>
+      <button id="btnRegalo" onclick="mostrarCarta()">🎁 Tienes un regalo de Michel</button>
+
+      <div class="contenido-regalo" id="contenidoRegalo">
+        <audio controls autoplay loop>
+          <source src="musica.mp3" type="audio/mpeg">
+          Tu navegador no soporta audio.
+        </audio>
+
+        <div class="carta" id="cartaTexto">
+          Querida Himeko, gracias por estos dos meses hermosos que hemos compartido. Cada momento contigo es un regalo y no puedo esperar por todos los que vienen. Te amo más de lo que las palabras pueden decir. ❤️
+        </div>
+
+        <div class="galeria">
+          <img src="foto1.jpg" alt="Foto 1">
+          <img src="foto2.jpg" alt="Foto 2">
+          <img src="foto3.jpg" alt="Foto 3">
+          <img src="foto4.jpg" alt="Foto 4">
+          <img src="foto5.jpg" alt="Foto 5">
+          <img src="foto6.jpg" alt="Foto 6">
+          <img src="foto7.jpg" alt="Foto 7">
+          <img src="foto8.jpg" alt="Foto 8">
+          <img src="foto9.jpg" alt="Foto 9">
+          <img src="foto10.jpg" alt="Foto 10">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function verificarFecha() {
+      const fechaInput = document.getElementById("fechaPedido").value;
+      const mensaje = document.getElementById("mensaje");
+      const corazon = document.getElementById("animacionCargando");
+      const contenido = document.getElementById("contenidoPedido");
+
+      mensaje.innerText = "";
+      contenido.style.display = "none";
+      corazon.style.display = "none";
+
+      if (fechaInput === "2025-03-17" || fechaInput === "2025-05-17") {
+        corazon.style.display = "flex";
+        setTimeout(() => {
+          corazon.style.display = "none";
+          contenido.style.display = "block";
+        }, 4000);
+      } else {
+        mensaje.innerText = "Pedido no encontrado 😔";
+      }
+    }
+
+    function mostrarCarta() {
+      document.getElementById("btnRegalo").style.display = "none";
+      document.getElementById("tituloFelicidades").style.display = "block";
+      document.getElementById("contenidoRegalo").style.display = "block";
+    }
+  </script>
+</body>
+</html>
+
